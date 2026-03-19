@@ -1,0 +1,24 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# 1. Load Data
+df = pd.read_csv('job_search_platform_efficacy_100k.csv')
+
+# 2. Hitung Success Rate per baris (opsional) atau agregasi langsung
+# Mari kita lihat rata-rata tawaran diterima (Offer_Received) per Platform dan Jurusan
+platform_efficacy = df.groupby(['Major_Category', 'Primary_Search_Platform'])['Offer_Received'].mean().reset_index()
+
+# Konversi ke persen
+platform_efficacy['Success_Rate (%)'] = platform_efficacy['Offer_Received'] * 100
+
+# 3. Membuat Visualisasi (Bar Chart mirip gambar yang kamu unggah)
+plt.figure(figsize=(12, 6))
+sns.barplot(data=platform_efficacy, x='Major_Category', y='Success_Rate (%)', hue='Primary_Search_Platform')
+
+plt.title('Efektivitas Platform Pencarian Kerja Berdasarkan Jurusan')
+plt.ylabel('Persentase Mendapat Tawaran (%)')
+plt.xlabel('Kategori Jurusan')
+plt.legend(title='Platform')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
